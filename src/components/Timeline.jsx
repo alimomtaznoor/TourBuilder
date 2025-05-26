@@ -1,14 +1,21 @@
-import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/all";
+import { useEffect, useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function Timeline({ steps }) {
+export default function Timeline({ steps, setCurrentStep }) {
   const timelineRef = useRef([]);
+
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     timelineRef.current.forEach((el, index) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top center",
+        onEnter: () => setCurrentStep(index),
+        onEnterBack: () => setCurrentStep(index),
+      });
+
       gsap.fromTo(
         el,
         { opacity: 0, y: 50 },
@@ -20,17 +27,17 @@ export default function Timeline({ steps }) {
           scrollTrigger: {
             trigger: el,
             start: "top 90%",
-            toggleActions: "play none none reverse",
           },
         }
       );
     });
-  }, [steps]);
+  }, [steps, setCurrentStep]);
 
   return (
     <div className="w-full max-w-4xl mx-auto py-10 space-y-10">
       {steps.map((step, index) => (
         <div
+          data-step
           key={index}
           ref={(el) => (timelineRef.current[index] = el)}
           className="bg-white shadow-md rounded-lg p-6 flex flex-col md:flex-row gap-4 items-center"

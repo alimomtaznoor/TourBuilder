@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LandingPage from "./components/LandingPage";
@@ -9,35 +7,7 @@ import StickySidebar from "./components/StickySidebar";
 import Header from "./components/Header";
 import DemoPreview from "./components/DemoPreview";
 
-const initialSteps = [
-  {
-    id: 1,
-    title: "Welcome to Your Product",
-    image:
-      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=300&fit=crop",
-    description:
-      "Start your journey with our intuitive dashboard that helps you track everything in one place.",
-    highlight: { x: 50, y: 100, width: 200, height: 80 },
-  },
-  {
-    id: 2,
-    title: "Explore Key Features",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=300&fit=crop",
-    description:
-      "Discover powerful analytics and insights that drive your business forward.",
-    highlight: { x: 300, y: 150, width: 250, height: 100 },
-  },
-  {
-    id: 3,
-    title: "Customize Your Experience",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=300&fit=crop",
-    description:
-      "Personalize your workspace to match your workflow and preferences.",
-    highlight: { x: 100, y: 200, width: 300, height: 120 },
-  },
-];
+import { initialSteps } from "./data/demoSteps";
 
 function App() {
   const [started, setStarted] = useState(false);
@@ -83,7 +53,7 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
+      className={`min-h-screen transition-colors duration-500 ${
         isDarkMode ? "dark bg-gray-900" : "bg-gray-50"
       }`}
     >
@@ -97,59 +67,109 @@ function App() {
 
       <AnimatePresence mode="wait">
         {isPreviewMode ? (
-          <motion.div
+          <DemoPreview
             key="preview"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <DemoPreview
-              steps={steps}
-              onClose={() => setIsPreviewMode(false)}
-              isDarkMode={isDarkMode}
-            />
-          </motion.div>
+            steps={steps}
+            onClose={() => setIsPreviewMode(false)}
+            isDarkMode={isDarkMode}
+          />
         ) : (
           <motion.div
             key="editor"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="flex gap-6 items-start w-full max-w-7xl mx-auto p-6"
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="w-full max-w-7xl mx-auto p-4 md:p-6"
           >
-            <div className="w-1/3 space-y-6">
-              <EditorPanel
-                onAddStep={addStep}
-                isDarkMode={isDarkMode}
-                steps={steps}
-                onDeleteStep={deleteStep}
-                onUpdateStep={updateStep}
-              />
+            {/* mobile and tablet layout */}
+            <div className="lg:hidden space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.6,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+              >
+                <EditorPanel
+                  onAddStep={addStep}
+                  isDarkMode={isDarkMode}
+                  steps={steps}
+                  onDeleteStep={deleteStep}
+                  onUpdateStep={updateStep}
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.2,
+                  duration: 0.6,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+              >
+                <Timeline
+                  steps={steps}
+                  setCurrentStep={setCurrentStep}
+                  isDarkMode={isDarkMode}
+                />
+              </motion.div>
             </div>
 
-            <div className="flex-1 flex gap-6">
-              <StickySidebar
-                steps={steps}
-                currentStep={currentStep}
-                onDotClick={(index) => {
-                  const target =
-                    document.querySelectorAll("[data-step]")[index];
-                  if (target) {
-                    target.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center",
-                    });
-                  }
+            {/* desktop layout */}
+            <div className="hidden lg:flex gap-8 items-start">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.6,
+                  ease: [0.25, 0.46, 0.45, 0.94],
                 }}
-                isDarkMode={isDarkMode}
-              />
-              <Timeline
-                steps={steps}
-                setCurrentStep={setCurrentStep}
-                isDarkMode={isDarkMode}
-              />
+                className="w-1/3 space-y-6"
+              >
+                <EditorPanel
+                  onAddStep={addStep}
+                  isDarkMode={isDarkMode}
+                  steps={steps}
+                  onDeleteStep={deleteStep}
+                  onUpdateStep={updateStep}
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.2,
+                  duration: 0.6,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                className="flex-1 flex gap-6"
+              >
+                <StickySidebar
+                  steps={steps}
+                  currentStep={currentStep}
+                  onDotClick={(index) => {
+                    const target =
+                      document.querySelectorAll("[data-step]")[index];
+                    if (target) {
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
+                    }
+                  }}
+                  isDarkMode={isDarkMode}
+                />
+                <Timeline
+                  steps={steps}
+                  setCurrentStep={setCurrentStep}
+                  isDarkMode={isDarkMode}
+                />
+              </motion.div>
             </div>
           </motion.div>
         )}

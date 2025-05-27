@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LandingPage from "./components/LandingPage";
 import EditorPanel from "./components/EditorPanel";
-import Timeline from "./components/TimeLine";
+import Timeline from "./components/Timeline";
 import StickySidebar from "./components/StickySidebar";
 import Header from "./components/Header";
 import DemoPreview from "./components/DemoPreview";

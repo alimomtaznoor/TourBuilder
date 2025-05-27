@@ -1,7 +1,7 @@
 
 
 import { motion } from "framer-motion";
-import { Sun, Moon, Play, Edit3, Eye } from "lucide-react";
+import { Sun, Moon, Edit3, Eye } from "lucide-react";
 
 export default function Header({
   isDarkMode,

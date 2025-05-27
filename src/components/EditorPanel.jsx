@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import {
   Plus,
@@ -26,6 +26,8 @@ export default function EditorPanel({
   const [isAdding, setIsAdding] = useState(false);
   const [editingStep, setEditingStep] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
+
+  const formRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,6 +55,8 @@ export default function EditorPanel({
     setTitle(step.title);
     setImage(step.image || "");
     setDescription(step.description);
+
+    formRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const cancelEditing = () => {
@@ -70,6 +74,7 @@ export default function EditorPanel({
     <div className="space-y-6">
       {/* the form*/}
       <motion.form
+        ref={formRef}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}

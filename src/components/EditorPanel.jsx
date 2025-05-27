@@ -1,5 +1,7 @@
-import { useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+
+import { useState } from "react";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import {
   Plus,
   Trash2,
@@ -7,6 +9,7 @@ import {
   ImageIcon,
   Type,
   FileText,
+  GripVertical,
 } from "lucide-react";
 
 export default function EditorPanel({
@@ -15,15 +18,14 @@ export default function EditorPanel({
   steps,
   onDeleteStep,
   onUpdateStep,
+  onReorderSteps,
 }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [editingStep, setEditingStep] = useState(null);
-
-  const formRef = useRef(null);
-
+  const [draggedItem, setDraggedItem] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,9 +53,6 @@ export default function EditorPanel({
     setTitle(step.title);
     setImage(step.image || "");
     setDescription(step.description);
-
-    // Scroll the form into view smoothly
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const cancelEditing = () => {
@@ -63,11 +62,14 @@ export default function EditorPanel({
     setDescription("");
   };
 
+  const handleReorder = (newSteps) => {
+    onReorderSteps(newSteps);
+  };
+
   return (
     <div className="space-y-6">
-      {/* form */}
+      {/* the form*/}
       <motion.form
-        ref={formRef}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -218,7 +220,7 @@ export default function EditorPanel({
         </AnimatePresence>
       </motion.form>
 
-      {/* steps list */}
+      {/* the drag list */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -233,96 +235,169 @@ export default function EditorPanel({
             : "bg-white/90 border-gray-200/50"
         }`}
       >
-        <h3
-          className={`text-xl font-bold mb-6 ${
-            isDarkMode ? "text-white" : "text-gray-900"
-          }`}
-        >
-          Your Steps ({steps.length})
-        </h3>
-
-        <div className="space-y-4">
-          <AnimatePresence>
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.id}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
-                transition={{
-                  delay: index * 0.05,
-                  duration: 0.5,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-                whileHover={{ scale: 1.02, y: -2 }}
-                className={`p-5 rounded-xl border transition-all duration-300 ${
-                  isDarkMode
-                    ? "bg-gray-700/50 border-gray-600/50 hover:bg-gray-700"
-                    : "bg-gray-50/50 border-gray-200/50 hover:bg-white"
-                } shadow-lg hover:shadow-xl`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                        Step {index + 1}
-                      </span>
-                    </div>
-                    <h4
-                      className={`font-semibold mb-2 truncate ${
-                        isDarkMode ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      {step.title}
-                    </h4>
-                    <p
-                      className={`text-sm line-clamp-2 ${
-                        isDarkMode ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      {step.description}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-2 ml-4 flex-shrink-0">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => startEditing(step)}
-                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => onDeleteStep(step.id)}
-                      className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-
-          {steps.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`text-center py-12 ${
-                isDarkMode ? "text-gray-400" : "text-gray-500"
+        <div className="flex items-center justify-between mb-6">
+          <h3
+            className={`text-xl font-bold ${
+              isDarkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Your Steps ({steps.length})
+          </h3>
+          {steps.length > 1 && (
+            <div
+              className={`text-sm flex items-center gap-2 ${
+                isDarkMode ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              <Plus className="w-16 h-16 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium">No steps yet</p>
-              <p className="text-sm">
-                Add your first step above to get started!
-              </p>
-            </motion.div>
+              <GripVertical className="w-4 h-4" />
+              Drag to reorder
+            </div>
           )}
         </div>
+
+        {steps.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`text-center py-12 ${
+              isDarkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
+            <Plus className="w-16 h-16 mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium">No steps yet</p>
+            <p className="text-sm">Add your first step above to get started!</p>
+          </motion.div>
+        ) : (
+          <Reorder.Group
+            axis="y"
+            values={steps}
+            onReorder={handleReorder}
+            className="space-y-3"
+            layoutScroll
+            style={{ pointerEvents: draggedItem ? "none" : "auto" }}
+          >
+            {steps.map((step, index) => (
+              <Reorder.Item
+                key={step.id}
+                value={step}
+                dragListener={false}
+                className="relative"
+                onDragStart={() => setDraggedItem(step.id)}
+                onDragEnd={() => setDraggedItem(null)}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    delay: index * 0.05,
+                    duration: 0.3,
+                    ease: "easeOut",
+                  },
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.95,
+                  transition: { duration: 0.2 },
+                }}
+                whileDrag={{
+                  scale: 1.05,
+                  rotate: 1,
+                  zIndex: 50,
+                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                  transition: { duration: 0.2 },
+                }}
+                style={{
+                  pointerEvents:
+                    draggedItem && draggedItem !== step.id ? "none" : "auto",
+                }}
+              >
+                <motion.div
+                  className={`p-5 rounded-xl border transition-all duration-200 ${
+                    isDarkMode
+                      ? "bg-gray-700/50 border-gray-600/50 hover:bg-gray-700/70"
+                      : "bg-gray-50/50 border-gray-200/50 hover:bg-white/70"
+                  } shadow-lg hover:shadow-xl ${
+                    draggedItem === step.id ? "shadow-2xl" : ""
+                  }`}
+                  whileHover={{
+                    y: -2,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    {/* the handle drag */}
+                    <Reorder.Item
+                      value={step}
+                      dragListener={true}
+                      className={`mt-1 p-1 rounded cursor-grab active:cursor-grabbing transition-colors ${
+                        isDarkMode
+                          ? "text-gray-500 hover:text-gray-400 hover:bg-gray-600/50"
+                          : "text-gray-400 hover:text-gray-600 hover:bg-gray-200/50"
+                      }`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <GripVertical className="w-5 h-5" />
+                    </Reorder.Item>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-3">
+                        <motion.span
+                          className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                          key={`step-${index}`}
+                          initial={{ scale: 0.8 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          Step {index + 1}
+                        </motion.span>
+                      </div>
+                      <h4
+                        className={`font-semibold mb-2 truncate ${
+                          isDarkMode ? "text-white" : "text-gray-900"
+                        }`}
+                      >
+                        {step.title}
+                      </h4>
+                      <p
+                        className={`text-sm line-clamp-2 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        {step.description}
+                      </p>
+                    </div>
+
+                    <div className="flex gap-2 flex-shrink-0">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startEditing(step);
+                        }}
+                        className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition-colors cursor-pointer"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteStep(step.id);
+                        }}
+                        className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              </Reorder.Item>
+            ))}
+          </Reorder.Group>
+        )}
       </motion.div>
     </div>
   );

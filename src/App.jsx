@@ -45,6 +45,10 @@ function App() {
     );
   };
 
+  const reorderSteps = (newSteps) => {
+    setSteps(newSteps);
+  };
+
   if (!started) {
     return (
       <LandingPage onStart={() => setStarted(true)} isDarkMode={isDarkMode} />
@@ -82,7 +86,7 @@ function App() {
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="w-full max-w-7xl mx-auto p-4 md:p-6"
           >
-            {/* mobile and tablet layout */}
+            {/* mobile and tablet screen */}
             <div className="lg:hidden space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -99,6 +103,7 @@ function App() {
                   steps={steps}
                   onDeleteStep={deleteStep}
                   onUpdateStep={updateStep}
+                  onReorderSteps={reorderSteps}
                 />
               </motion.div>
               <motion.div
@@ -118,7 +123,7 @@ function App() {
               </motion.div>
             </div>
 
-            {/* desktop layout */}
+            {/* Desktop Layout */}
             <div className="hidden lg:flex gap-8 items-start">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -136,6 +141,7 @@ function App() {
                   steps={steps}
                   onDeleteStep={deleteStep}
                   onUpdateStep={updateStep}
+                  onReorderSteps={reorderSteps}
                 />
               </motion.div>
 
@@ -179,3 +185,4 @@ function App() {
 }
 
 export default App;
+

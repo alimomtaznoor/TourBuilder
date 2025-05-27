@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Play, Sparkles, Zap, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 
+
 export default function LandingPage({ onStart, isDarkMode }) {
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -225,7 +226,7 @@ export default function LandingPage({ onStart, isDarkMode }) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  delay: 1.2 + index * 0.2,
+                  delay: 0.2 + index * 0.1,
                   duration: 0.8,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
@@ -302,6 +303,7 @@ export default function LandingPage({ onStart, isDarkMode }) {
           </div>
         </motion.div>
       </div>
+      
     </div>
   );
 }

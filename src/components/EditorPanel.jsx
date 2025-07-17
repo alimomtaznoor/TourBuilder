@@ -85,7 +85,7 @@ export default function EditorPanel({
             : "bg-white/90 border-gray-200/50"
         }`}
       >
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-8">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 180 }}
             transition={{ type: "spring", stiffness: 300 }}

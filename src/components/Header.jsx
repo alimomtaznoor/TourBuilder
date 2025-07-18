@@ -15,7 +15,7 @@ export default function Header({
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`sticky top-0 z-40 border-b backdrop-blur-2xl ${
+      className={`sticky top-0 z-20 border-b backdrop-blur-2xl ${
         isDarkMode
           ? "bg-gray-900/90 border-gray-700/50"
           : "bg-white/90 border-gray-200/50"

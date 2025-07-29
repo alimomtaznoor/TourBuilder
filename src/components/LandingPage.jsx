@@ -168,7 +168,7 @@ export default function LandingPage({ onStart, isDarkMode }) {
               duration: 1,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            className="text-lg md:text-xl lg:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed px-4"
+            className="text-lg md:text-xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed px-4"
           >
             Create interactive demos that convert — in minutes, not hours. Build
             engaging product tours with smooth animations and visual

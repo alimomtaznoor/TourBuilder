@@ -214,7 +214,7 @@ export default function DemoPreview({ steps, onClose, isDarkMode }) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={onClose}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${
+            className={`p-2 rounded-lg transition-colors cursor-pointer ${
               isDarkMode
                 ? "hover:bg-gray-700 text-gray-400"
                 : "hover:bg-gray-200 text-gray-600"

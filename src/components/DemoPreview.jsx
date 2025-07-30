@@ -184,7 +184,7 @@ export default function DemoPreview({ steps, onClose, isDarkMode }) {
         <div
           className={`flex items-center justify-between p-4 md:p-6 border-b ${
             isDarkMode
-              ? "border-gray-700 bg-gray-800/50"
+              ? "border-gray-800 bg-gray-800/50"
               : "border-gray-200 bg-gray-50/50"
           }`}
         >

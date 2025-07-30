@@ -152,7 +152,7 @@ export default function DemoPreview({ steps, onClose, isDarkMode }) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onClose}
-            className="bg-blue-400 text-white px-4 md:px-6 py-2 rounded-xl hover:bg-blue-700 cursor-pointer transition-colors shadow-lg"
+            className="bg-blue-500 text-white px-4 md:px-6 py-2 rounded-xl hover:bg-blue-700 cursor-pointer transition-colors shadow-lg"
           >
             Back to Editor
           </motion.button>

@@ -139,7 +139,7 @@ export default function DemoPreview({ steps, onClose, isDarkMode }) {
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           className={`max-w-md mx-4 p-6 md:p-8 rounded-2xl text-center shadow-2xl ${
-            isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+            isDarkMode ? "bg-gray-700 text-white" : "bg-white text-gray-900"
           }`}
         >
           <h3 className="text-lg md:text-xl font-bold mb-4">

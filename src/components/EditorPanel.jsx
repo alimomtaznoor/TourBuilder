@@ -136,7 +136,7 @@ export default function EditorPanel({
           >
             <label
               className={`flex items-center gap-2 text-sm font-medium mb-3 ${
-                isDarkMode ? "text-gray-300" : "text-gray-700"
+                isDarkMode ? "text-gray-400" : "text-gray-700"
               }`}
             >
               <ImageIcon className="w-4 h-4" />

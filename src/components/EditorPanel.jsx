@@ -122,7 +122,7 @@ export default function EditorPanel({
               className={`w-full p-4 rounded-xl border transition-all duration-300 ${
                 isDarkMode
                   ? "bg-gray-700/60 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:bg-gray-700"
-                  : "bg-gray-50/50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:bg-white"
+                  : "bg-gray-50/60 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:bg-white"
               } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
               value={title}
               onChange={(e) => setTitle(e.target.value)}

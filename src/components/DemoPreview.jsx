@@ -145,7 +145,7 @@ export default function DemoPreview({ steps, onClose, isDarkMode }) {
           <h3 className="text-lg md:text-xl font-bold mb-4">
             No Steps to Preview
           </h3>
-          <p className="text-gray-600 mb-6 text-sm md:text-base">
+          <p className="text-gray-500 mb-6 text-sm md:text-base">
             Add some steps first to see your demo in action.
           </p>
           <motion.button

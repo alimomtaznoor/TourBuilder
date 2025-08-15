@@ -237,7 +237,7 @@ export default function LandingPage({ onStart, isDarkMode }) {
                   {feature.icon}
                 </div>
                 <h3 className="font-semibold mb-2 text-lg">{feature.title}</h3>
-                <p className="text-blue-100 text-sm leading-relaxed">
+                <p className="text-blue-200 text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </motion.div>

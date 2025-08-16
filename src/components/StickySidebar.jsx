@@ -145,7 +145,7 @@ export default function StickySidebar({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
         className={`text-xs mt-4 font-medium ${
-          isDarkMode ? "text-gray-400" : "text-gray-600"
+          isDarkMode ? "text-gray-500" : "text-gray-600"
         }`}
       >
         <div className="flex items-center gap-2">

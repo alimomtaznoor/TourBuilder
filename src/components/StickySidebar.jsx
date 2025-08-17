@@ -110,7 +110,7 @@ export default function StickySidebar({
             whileHover={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.2 }}
             className={`absolute left-8 top-1/2 -translate-y-1/2 z-50 ${
-              isDarkMode ? "bg-gray-800 text-white" : "bg-gray-900 text-white"
+              isDarkMode ? "bg-gray-700 text-white" : "bg-gray-900 text-white"
             } px-4 py-2 rounded-xl shadow-xl text-sm whitespace-nowrap border border-white/10`}
           >
             <div className="font-medium">{step.title}</div>
